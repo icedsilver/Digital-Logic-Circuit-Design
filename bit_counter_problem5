@@ -1,0 +1,49 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity ones_counter_seg is
+    port (
+        vt  : in  std_logic_vector(12 downto 0);
+        en  : in  std_logic;
+        seg : out std_logic_vector(6 downto 0)
+    );
+end ones_counter_seg;
+
+architecture behavioral of ones_counter_seg is
+begin
+    process(vt, en)
+        variable cnt : integer range 0 to 15;
+    begin
+        cnt := 0;
+        for i in 0 to 12 loop
+            if vt(i) = '1' then
+                cnt := cnt + 1;
+            end if;
+        end loop;
+
+        if en = '0' then
+            seg <= "0000000"; -- en='0'이면 화면 끔
+        else
+            case cnt is
+                when 0  => seg <= "0111111"; -- 0
+                when 1  => seg <= "0000110"; -- 1
+                when 2  => seg <= "1011011"; -- 2
+                when 3  => seg <= "1001111"; -- 3
+                when 4  => seg <= "1100110"; -- 4
+                when 5  => seg <= "1101101"; -- 5
+                when 6  => seg <= "1111101"; -- 6
+                when 7  => seg <= "0000111"; -- 7
+                when 8  => seg <= "1111111"; -- 8
+                when 9  => seg <= "1101111"; -- 9
+                when 10 => seg <= "1110111"; -- A
+                when 11 => seg <= "1111100"; -- b
+                when 12 => seg <= "0111001"; -- C
+                when 13 => seg <= "1011110"; -- d
+                when 14 => seg <= "1111001"; -- E
+                when 15 => seg <= "1110001"; -- F
+                when others => seg <= "0000000";
+            end case;
+        end if;
+    end process;
+end behavioral;

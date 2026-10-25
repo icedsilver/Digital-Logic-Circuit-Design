@@ -1,0 +1,30 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity voting25 is
+    port (
+        votes : in  std_logic_vector(24 downto 0);
+        pass  : out std_logic
+    );
+end voting25;
+
+architecture behavioral of voting25 is
+begin
+    process(votes)
+        variable cnt : integer range 0 to 25;
+    begin
+        cnt := 0;
+        for i in 0 to 24 loop
+            if votes(i) = '1' then
+                cnt := cnt + 1;
+            end if;
+        end loop;
+
+        if cnt >= 13 then
+            pass <= '1';
+        else
+            pass <= '0';
+        end if;
+    end process;
+end behavioral;
